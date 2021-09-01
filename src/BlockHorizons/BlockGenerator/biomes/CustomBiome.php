@@ -127,11 +127,11 @@ abstract class CustomBiome extends Biome
         MESA_PLATEAU_M = 167,
         VOID = 127;
 
-    private static SplFixedArray $customBiomes;
+    private static $customBiomes;
 
     /** @var float */
-    protected float $baseHeight = 0.1;
-    protected float $heightVariation = 0.3;
+    protected $baseHeight = 0.1;
+    protected $heightVariation = 0.3;
 
     public function __construct()
     {
