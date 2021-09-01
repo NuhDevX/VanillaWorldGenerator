@@ -51,7 +51,6 @@ class Loader extends PluginBase implements Listener
 
 		$chunk = $player->getLevel()->getChunk($cx = $player->x >> 4, $cz = $player->z >> 4);
 		$biome = CustomBiome::getBiome($chunk->getBiomeId($rx = $player->x % 16, $rz = $player->z % 16));
-		$player->sendTip("Chunk($cx, $cz)"."\n"."Biome @ {$rx}, {$rz}: ".$biome->getName()." ({$biome->getId()})"."\n"."Temperature: ".$biome->getTemperature()."\n"."Rainfall: ".$biome->getRainfall()." Elevation: ".$biome->getBaseHeight()." variation: ".$biome->getHeightVariation());
 	}
 
 	public static function pretty_constant(string $s) : string {
