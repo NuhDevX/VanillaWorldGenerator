@@ -2,6 +2,6 @@
 name: BlockGenerator
 author: BlockHorizons
 authors: [Chris-Prime]
-api: [4.0.0, 3.0.0]
+api: [4.0.0, 3.22.1]
 version: 0.1.0_beta
 main: BlockHorizons\BlockGenerator\Loader
