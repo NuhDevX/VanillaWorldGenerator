@@ -16,7 +16,7 @@ use pocketmine\plugin\PluginBase;
 class Loader extends PluginBase implements Listener
 {
 
-    public function onLoad()
+    public function onLoad(): void
     {
         CustomBiome::init();
 
@@ -36,12 +36,12 @@ class Loader extends PluginBase implements Listener
         $this->getServer()->getWorldManager()->loadWorld("unox_level");
     }
 
-    public function onDisable() {
+    public function onDisable(): void {
         @rmdir("worlds/real_level");
         @rmdir("worlds/unox_level");
     }
 
-    public function onEnable() {
+    public function onEnable(): void {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
     }
 
@@ -49,8 +49,8 @@ class Loader extends PluginBase implements Listener
 		$player = $event->getPlayer();
         if($player->getInventory()->getItemInHand()->getTypeId() !== ItemTypeIds::STICK) return; //ini buat apa?
 
-		$chunk = $player->getWorld()->getChunk($cx = $player->x >> 4, $cz = $player->z >> 4);
-		$biome = CustomBiome::getBiome($chunk->getBiomeId($rx = $player->x % 16, $rz = $player->z % 16));
+		$chunk = $player->getWorld()->getChunk($cx = $player->getLocation()->getX() >> 4, $cz = $player->getLocation()->getZ() >> 4);
+		$biome = CustomBiome::getBiome($chunk->getBiomeId($rx = $player->getLocation()->getX() % 16, $rz = $player->getLocation()->getZ() % 16));
 	}
 
 	public static function pretty_constant(string $s) : string {
