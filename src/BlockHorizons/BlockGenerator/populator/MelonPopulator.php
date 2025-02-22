@@ -4,8 +4,8 @@ namespace BlockHorizons\BlockGenerator\populator;
 
 use BlockHorizons\BlockGenerator\populator\helper\EnsureCover;
 use BlockHorizons\BlockGenerator\populator\helper\EnsureGrassBelow;
-use pocketmine\block\Block;
-use pocketmine\level\format\Chunk;
+use pocketmine\block\BlockTypeIds;
+use pocketmine\world\format\Chunk;
 use pocketmine\utils\Random;
 
 class MelonPopulator extends SurfaceBlockPopulator
@@ -18,7 +18,7 @@ class MelonPopulator extends SurfaceBlockPopulator
 
     protected function getBlockId(int $x, int $z, Random $random, Chunk $chunk): int
     {
-        return Block::MELON_BLOCK;
+        return BlockTypeIds::MELON_BLOCK;
     }
 
 }
