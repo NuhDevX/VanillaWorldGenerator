@@ -4,23 +4,22 @@ namespace BlockHorizons\BlockGenerator\populator;
 use BlockHorizons\BlockGenerator\biomes\CustomBiome;
 use BlockHorizons\BlockGenerator\biomes\type\CoveredBiome;
 use BlockHorizons\BlockGenerator\generators\BlockGenerator;
-use pocketmine\block\Block;
-use pocketmine\block\BlockFactory;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\biome\Biome;
-use pocketmine\level\generator\populator\Populator;
+use pocketmine\block\BlockTypeIds;
+use pocketmine\world\ChunkManager;
+use pocketmine\world\biome\Biome;
+use pocketmine\world\generator\populator\Populator;
 use pocketmine\utils\Random;
-use pocketmine\level\format\Chunk;
+use pocketmine\world\format\Chunk;
 
 
 class GroundCoverPopulator extends Populator {
 
-   const STONE = Block::STONE << 4;
+   const STONE = BlockTypeIds::STONE << 4;
 
-    public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random) : void {
+    public function populate(ChunkManager $world, int $chunkX, int $chunkZ, Random $random) : void {
         $realX = $chunkX << 4;
         $realZ = $chunkZ << 4;
-        $chunk = $level->getChunk($chunkX, $chunkZ);
+        $chunk = $world->getChunk($chunkX, $chunkZ);
         for ($x = 0; $x < 16; ++$x) {
             for ($z = 0; $z < 16; ++$z) {
                 $biome = CustomBiome::getBiome($chunk->getBiomeId($x, $z));
@@ -30,21 +29,21 @@ class GroundCoverPopulator extends Populator {
                     $hasCovered = false;
                     $realY = 0; // int
                     for ($y = 254; $y > 32; $y--) {
-                        if ($chunk->getFullBlock($x, $y, $z) === self::STONE) {
+                        if ($chunk->getBlockStateId($x, $y, $z) === self::STONE) {
                             COVER:
                             if (!$hasCovered) {
                                 if ($y >= BlockGenerator::SEA_HEIGHT) {
                                     $coverBlock = self::fromFullBlock($biome->getCoverBlock($y), $chunk);
 
                                     if($coverBlock->getId() > 0) {
-                                        $chunk->setBlock($x, $y + 1, $z, $coverBlock->getId(), $coverBlock->getDamage());
+                                        $chunk->setBlockStateId($x, $y + 1, $z, $coverBlock->getId(), $coverBlock->getDamage());
                                     }
                                     $surfaceDepth = $biome->getSurfaceDepth($y);
                                     for ($i = 0; $i < $surfaceDepth; $i++) {
                                         $realY = $y - $i;
                                         $surfaceBlock = self::fromFullBlock($biome->getSurfaceBlock($realY) << 4, $chunk);
-                                        if ($chunk->getFullBlock($x, $realY, $z) === self::STONE) {
-                                            $chunk->setBlock($x, $realY, $z, $surfaceBlock->getId(), $surfaceBlock->getDamage());
+                                        if ($chunk->getBlockStateId($x, $realY, $z) === self::STONE) {
+                                            $chunk->setBlockState($x, $realY, $z, $surfaceBlock->getId(), $surfaceBlock->getDamage());
                                         } else {
                                             $y--; goto COVER; // FIXME
                                         };
@@ -55,8 +54,8 @@ class GroundCoverPopulator extends Populator {
                                 for ($i = 0; $i < $groundDepth; $i++) {
                                     $realY = $y - $i;
                                     $groundBlock = self::fromFullBlock($biome->getGroundBlock($realY) << 4, $chunk);
-                                    if ($chunk->getFullBlock($x, $realY, $z) === self::STONE) {
-                                        $chunk->setBlock($x, $realY, $z, $groundBlock->getId(), $groundBlock->getDamage());
+                                    if ($chunk->getBlockStateId($x, $realY, $z) === self::STONE) {
+                                        $chunk->setBlockStateId($x, $realY, $z, $groundBlock->getId(), $groundBlock->getDamage());
                                     } else {
                                         $y--; goto COVER;
                                     }
@@ -78,6 +77,6 @@ class GroundCoverPopulator extends Populator {
     }
 
     public static function fromFullBlock(int $fullState, Chunk $chunk) : Block{
-        return BlockFactory::get($fullState >> 4, $fullState & 0xf);
+        return $fullState >> 4, $fullState & 0xf;
     }
 }
