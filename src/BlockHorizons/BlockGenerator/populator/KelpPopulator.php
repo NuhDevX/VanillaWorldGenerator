@@ -4,8 +4,8 @@ namespace BlockHorizons\BlockGenerator\populator;
 
 use BlockHorizons\BlockGenerator\generators\BlockGenerator;
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\format\Chunk;
+use pocketmine\world\ChunkManager;
+use pocketmine\world\format\Chunk;
 use pocketmine\utils\Random;
 
 class KelpPopulator extends SurfaceBlockPopulator
