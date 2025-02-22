@@ -4,7 +4,7 @@ namespace BlockHorizons\BlockGenerator\populator;
 
 use BlockHorizons\BlockGenerator\object\AcaciaTree;
 use BlockHorizons\BlockGenerator\object\BigSpruceTree;
-use pocketmine\block\Block;
+use pocketmine\block\BlockTypeIds;
 use pocketmine\world\ChunkManager;
 use pocketmine\world\generator\object\BirchTree;
 use pocketmine\world\generator\object\JungleTree;
@@ -63,8 +63,8 @@ class TreePopulator extends PopulatorCount
                 //}
                 break;
         }
-        if ($tree->canPlaceObject($level, $x, $y, $z, $random)) {
-            $tree->placeTrunk($level, $x, $y, $z, $random); //placeobject mungkin di ganti PlaceTrunk
+        if ($tree->canPlaceObject($world, $x, $y, $z, $random)) {
+            $tree->getBlockTransaction($world, $x, $y, $z, $random);
         }
     }
 
