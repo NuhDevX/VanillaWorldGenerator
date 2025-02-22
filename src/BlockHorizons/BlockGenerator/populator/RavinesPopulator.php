@@ -191,9 +191,9 @@ class RavinesPopulator extends Populator {
                                 $material = $generatingChunkBuffer->getBlockStateId($localX, $localY, $localZ);
                                 if (self::canBeReplaced($material)) {
                                     if ($localY - 1 < 10) {
-                                        $generatingChunkBuffer->setBlockStateId($localX, $localY, $localZ, Block::LAVA);
+                                        $generatingChunkBuffer->setBlockStateId($localX, $localY, $localZ, BlockTypeIds::LAVA);
                                     } else {
-                                        $generatingChunkBuffer->setBlockStateId($localX, $localY, $localZ, Block::AIR);
+                                        $generatingChunkBuffer->setBlockStateId($localX, $localY, $localZ, BlockTypeIds::AIR);
                                     }
                                 }
                             }
