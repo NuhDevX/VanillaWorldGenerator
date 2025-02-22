@@ -49,7 +49,7 @@ class Loader extends PluginBase implements Listener
 		$player = $event->getPlayer();
         if($player->getInventory()->getItemInHand()->getTypeId() !== ItemTypeIds::STICK) return; //ini buat apa?
 
-		$chunk = $player->getLevel()->getChunk($cx = $player->x >> 4, $cz = $player->z >> 4);
+		$chunk = $player->getWorld()->getChunk($cx = $player->x >> 4, $cz = $player->z >> 4);
 		$biome = CustomBiome::getBiome($chunk->getBiomeId($rx = $player->x % 16, $rz = $player->z % 16));
 	}
 
