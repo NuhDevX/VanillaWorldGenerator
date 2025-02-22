@@ -4,9 +4,8 @@ namespace BlockHorizons\BlockGenerator\populator;
 
 use BlockHorizons\BlockGenerator\populator\helper\EnsureCover;
 use BlockHorizons\BlockGenerator\populator\helper\EnsureGrassBelow;
-use pocketmine\block\Block;
-use pocketmine\block\BlockFactory;
-use pocketmine\level\format\Chunk;
+use pocketmine\block\BlockTypeIds;
+use pocketmine\world\format\Chunk;
 use pocketmine\utils\Random;
 
 class FlowerPopulator extends SurfaceBlockPopulator
@@ -32,11 +31,11 @@ class FlowerPopulator extends SurfaceBlockPopulator
         if (count($this->flowerTypes) !== 0) {
             $type = $this->flowerTypes[$random->nextRange(0, count($this->flowerTypes) - 1)];
 
-            $b = BlockFactory::get($type[0], $type[1]);
-            $chunk->setBlockId($x, $y, $z, $b->getId());
-            $chunk->setBlockData($x, $y, $z, $b->getVariant());
-            if ($type[0] === Block::DOUBLE_PLANT) {
-                $chunk->setBlock($x, $y + 1, $z, $b->getId(), $b->getVariant() | 0x08);
+            $b = $type[0], $type[1];
+            $chunk->setBlockStateId($x, $y, $z, $b->getTypeId());
+            $chunk->setBlockStateId($x, $y, $z, $b->getVariant());
+            if ($type[0] === BlockTypeIds::DOUBLE_PLANT) {
+                $chunk->setBlockStateId($x, $y + 1, $z, $b->getTypeId(), $b->getVariant() | 0x08);
             }
         }
     }
