@@ -1,7 +1,6 @@
 ---
-name: BlockGenerator
-author: BlockHorizons
-authors: [Chris-Prime]
-api: [4.0.0, 3.23.1]
-version: 0.1.0_beta
+name: VanillaWorldGenerator
+author: BlockHorizons, Chris-Prime, DanzX, NuhDev
+api: [5.0.0]
+version: 0.1.1_beta
 main: BlockHorizons\BlockGenerator\Loader
