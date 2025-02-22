@@ -49,7 +49,7 @@ class SwampTree extends CustomTree
                     for ($i1 = $position->getZ() - $k; $i1 <= $position->getZ() + $k && $flag; ++$i1) {
                         if ($j >= 0 && $j < 256) {
                             $pos2->setComponents($l, $j, $i1);
-                            if (!$this->canOverride(Block::get($worldIn->getBlockIdAt($pos2->x, $pos2->y, $pos2->z)))) {
+                            if (!$this->canOverride($worldIn->getBlockAt($pos2->x, $pos2->y, $pos2->z))) {
                                 $flag = false;
                             }
                         } else {
@@ -63,10 +63,10 @@ class SwampTree extends CustomTree
                 return false;
             } else {
                 $down = $position->down();
-                $block = $worldIn->getBlockIdAt($down->x, $down->y, $down->z);
+                $block = $worldIn->getBlockAt($down->x, $down->y, $down->z);
 
-                if (($block === Block::GRASS || $block === Block::DIRT) && $position->getY() < 256 - $i - 1) {
-                    $worldIn->setBlockIdAt($down->x, $down->y, $down->z, Block::DIRT);
+                if (($block === BlockTypeIds::GRASS || $block === BlockTypeIds::DIRT) && $position->getY() < 256 - $i - 1) {
+                    $worldIn->setBlockAt($down->x, $down->y, $down->z, BlockTypeIds::DIRT);
 
                     for ($k1 = $position->getY() - 3 + $i; $k1 <= $position->getY() + $i; ++$k1) {
                         $j2 = $k1 - ($position->getY() + $i);
@@ -80,10 +80,10 @@ class SwampTree extends CustomTree
 
                                 if (abs($k3) !== $l2 || abs($j1) !== $l2 || $rand->nextBoundedInt(2) !== 0 && $j2 !== 0) {
                                     $blockpos = new Vector3($j3, $k1, $i4);
-                                    $id = $worldIn->getBlockIdAt($blockpos->x, $blockpos->y, $blockpos->z);
+                                    $id = $worldIn->getBlockAt($blockpos->x, $blockpos->y, $blockpos->z);
 
-                                    if ($id === Block::AIR || $id === Block::LEAVES || $id === Block::VINE) {
-                                        $this->setBlockAndNotifyAdequately($worldIn, $blockpos, Block::get(Block::LEAVES, $this->metaLeaves));
+                                    if ($id === BlockTypeIds::AIR || $id === BlockTypeIds::OAK_LEAVES || $id === BlockTypeIds::VINE) {
+                                        $this->setBlockAndNotifyAdequately($worldIn, $blockpos, VanillaBlocks::OAK_LEAVES());
                                     }
                                 }
                             }
@@ -92,10 +92,10 @@ class SwampTree extends CustomTree
 
                     for ($l1 = 0; $l1 < $i; ++$l1) {
                         $up = $position->up($l1);
-                        $id = $worldIn->getBlockIdAt($up->x, $up->y, $up->z);
+                        $id = $worldIn->getBlockAt($up->x, $up->y, $up->z);
 
-                        if ($id === Block::AIR || $id === Block::LEAVES || $id === Block::WATER || $id === Block::STILL_WATER) {
-                            $this->setBlockAndNotifyAdequately($worldIn, $up, Block::get(Block::LOG, $this->metaWood));
+                        if ($id === BlockTypeIds::AIR || $id === BlockTypeIds::OAK_LEAVES || $id === BlockTypeIds::WATER) {
+                            $this->setBlockAndNotifyAdequately($worldIn, $up, VanillaBlocks::OAK_LEAVES());
                         }
                     }
 
@@ -108,25 +108,25 @@ class SwampTree extends CustomTree
                             for ($j4 = $position->getZ() - $i3; $j4 <= $position->getZ() + $i3; ++$j4) {
                                 $pos2->setComponents($l3, $i2, $j4);
 
-                                if ($worldIn->getBlockIdAt($pos2->x, $pos2->y, $pos2->z) === Block::LEAVES) {
+                                if ($worldIn->getBlockAt($pos2->x, $pos2->y, $pos2->z) === BlockTypeIds::OAK_LEAVES) {
                                     $blockpos2 = $pos2->west();
                                     $blockpos3 = $pos2->east();
                                     $blockpos4 = $pos2->north();
                                     $blockpos1 = $pos2->south();
 
-                                    if ($rand->nextBoundedInt(4) === 0 && $worldIn->getBlockIdAt($blockpos2->x, $blockpos2->y, $blockpos2->z) === Block::AIR) {
+                                    if ($rand->nextBoundedInt(4) === 0 && $worldIn->getBlockAt($blockpos2->x, $blockpos2->y, $blockpos2->z) === BlockTypeIds::AIR) {
                                         $this->addHangingVine($worldIn, $blockpos2, 8);
                                     }
 
-                                    if ($rand->nextBoundedInt(4) === 0 && $worldIn->getBlockIdAt($blockpos3->x, $blockpos3->y, $blockpos3->z) === Block::AIR) {
+                                    if ($rand->nextBoundedInt(4) === 0 && $worldIn->getBlockAt($blockpos3->x, $blockpos3->y, $blockpos3->z) === BlockTypeIds::AIR) {
                                         $this->addHangingVine($worldIn, $blockpos3, 2);
                                     }
 
-                                    if ($rand->nextBoundedInt(4) === 0 && $worldIn->getBlockIdAt($blockpos4->x, $blockpos4->y, $blockpos4->z) === Block::AIR) {
+                                    if ($rand->nextBoundedInt(4) === 0 && $worldIn->getBlockAt($blockpos4->x, $blockpos4->y, $blockpos4->z) === BlockTypeIds::AIR) {
                                         $this->addHangingVine($worldIn, $blockpos4, 1);
                                     }
 
-                                    if ($rand->nextBoundedInt(4) === 0 && $worldIn->getBlockIdAt($blockpos1->x, $blockpos1->y, $blockpos1->z) === Block::AIR) {
+                                    if ($rand->nextBoundedInt(4) === 0 && $worldIn->getBlockAt($blockpos1->x, $blockpos1->y, $blockpos1->z) === BlockTypeIds::AIR) {
                                         $this->addHangingVine($worldIn, $blockpos1, 4);
                                     }
                                 }
@@ -143,26 +143,26 @@ class SwampTree extends CustomTree
         }
     }
 
-    private function setBlockAndNotifyAdequately(ChunkManager $level, Vector3 $pos, Block $b): void
+    private function setBlockAndNotifyAdequately(ChunkManager $world, Vector3 $pos, Block $b): void
     {
-        $level->setBlockIdAt($pos->x, $pos->y, $pos->z, $b->getId());
-        $level->setBlockDataAt($pos->x, $pos->y, $pos->z, $b->getVariant());
+        $world->setBlockAt($pos->x, $pos->y, $pos->z, $b->getId());
+       // $level->setBlockDataAt($pos->x, $pos->y, $pos->z, $b->getVariant());
     }
 
-    private function addHangingVine(ChunkManager $worldIn, Vector3 $pos, int $meta): void
+    private function addHangingVine(ChunkManager $worldIn, Vector3 $pos): void
     {
-        $this->addVine($worldIn, $pos, $meta);
+        $this->addVine($worldIn, $pos);
         $i = 4;
 
-        for ($pos = $pos->down(); $i > 0 && $worldIn->getBlockIdAt($pos->x, $pos->y, $pos->z) === Block::AIR; --$i) {
-            $this->addVine($worldIn, $pos, $meta);
+        for ($pos = $pos->down(); $i > 0 && $worldIn->getBlockAt($pos->x, $pos->y, $pos->z) === BlockTypeIds::AIR; --$i) {
+            $this->addVine($worldIn, $pos);
             $pos = $pos->down();
         }
     }
 
-    private function addVine(ChunkManager $worldIn, Vector3 $pos, int $meta): void
+    private function addVine(ChunkManager $worldIn, Vector3 $pos): void
     {
-        $this->setBlockAndNotifyAdequately($worldIn, $pos, Block::get(Block::VINE, $meta));
+        $this->setBlockAndNotifyAdequately($worldIn, $pos, VanillaBlocks::VINE());
     }
 
 }
