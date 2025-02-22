@@ -10,7 +10,6 @@ use pocketmine\utils\Random;
 
 class FlowerPopulator extends SurfaceBlockPopulator
 {
-
     protected $flowerTypes = [];
 
     public function addType(int $a, int $b)
