@@ -4,9 +4,9 @@ namespace BlockHorizons\BlockGenerator\object;
 
 use BlockHorizons\BlockGenerator\math\FacingHelper;
 use pocketmine\block\Block;
-use pocketmine\block\BlockFactory;
-use pocketmine\block\UnknownBlock;
-use pocketmine\level\ChunkManager;
+use pocketmine\block\VanillaBlocks;
+use pocketmine\block\BlockTypeIds;
+use pocketmine\world\ChunkManager;
 use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
@@ -62,7 +62,7 @@ class NewJungleTree extends CustomTree
                     for ($i1 = $position->getZ() - $k; $i1 <= $position->getZ() + $k && $flag; ++$i1) {
                         if ($j >= 0 && $j < 256) {
                             $pos2->setComponents($l, $j, $i1);
-                            if (!$this->canOverride(BlockFactory::get($worldIn->getBlockIdAt($pos2->x, $pos2->y, $pos2->z)))) {
+                            if (!$this->canOverride($worldIn->getBlockAt($pos2->x, $pos2->y, $pos2->z))) {
                                 $flag = false;
                             }
                         } else {
@@ -76,10 +76,10 @@ class NewJungleTree extends CustomTree
                 return false;
             } else {
                 $down = $position->down();
-                $block = $worldIn->getBlockIdAt($down->x, $down->y, $down->z);
+                $block = $worldIn->getBlockAt($down->x, $down->y, $down->z);
 
-                if (($block === Block::GRASS || $block === Block::DIRT || $block === Block::FARMLAND) && $position->getY() < 256 - $i - 1) {
-                    $worldIn->setBlockIdAt($down->x, $down->y, $down->z, Block::DIRT);
+                if (($block === BlockTypeIds::GRASS || $block === BlockTypeIds::DIRT || $block === BlockTypeIds::FARMLAND) && $position->getY() < 256 - $i - 1) {
+                    $worldIn->setBlockAt($down->x, $down->y, $down->z, BlockTypeIds::DIRT);
                     $k2 = 3;
                     $l2 = 0;
 
@@ -95,10 +95,10 @@ class NewJungleTree extends CustomTree
 
                                 if (abs($l1) !== $j1 || abs($j2) !== $j1 || $rand->nextBoundedInt(2) !== 0 && $i4 !== 0) {
                                     $blockpos = new Vector3($k1, $i3, $i2);
-                                    $id = $worldIn->getBlockIdAt($blockpos->x, $blockpos->y, $blockpos->z);
+                                    $id = $worldIn->getBlockAt($blockpos->x, $blockpos->y, $blockpos->z);
 
-                                    if ($id === Block::AIR || $id === Block::LEAVES || $id == Block::VINE) {
-                                        $this->setBlockAndNotifyAdequately($worldIn, $blockpos, Block::get(Block::LEAVES, $this->metaLeaves));
+                                    if ($id === BlockTypeIds::AIR || $id === BlockTypeIds::JUNGLE_LEAVES || $id == BlockTypeIds::VINE) {
+                                        $this->setBlockAndNotifyAdequately($worldIn, $blockpos, VanillaBlock::JUNGLE_LEAVES());
                                     }
                                 }
                             }
@@ -109,8 +109,8 @@ class NewJungleTree extends CustomTree
                         $up = $position->up($j3);
                         $id = $worldIn->getBlockIdAt($up->x, $up->y, $up->z);
 
-                        if ($id === Block::AIR || $id === Block::LEAVES || $id === Block::VINE) {
-                            $this->setBlockAndNotifyAdequately($worldIn, $up, Block::get(Block::LOG, $this->metaWood));
+                        if ($id === BlockTypeIds::AIR || $id === BlockTypeIds::JUNGLE_LEAVES || $id === BlockTypeIds::VINE) {
+                            $this->setBlockAndNotifyAdequately($worldIn, $up, VanillaBlocks::JUNGLE_LOG());
 
                             if ($j3 > 0) {
                                 if ($rand->nextBoundedInt(3) > 0 && $this->isAirBlock($worldIn, $position->add(-1, $j3, 0))) {
@@ -141,25 +141,25 @@ class NewJungleTree extends CustomTree
                             for ($i5 = $position->getZ() - $k4; $i5 <= $position->getZ() + $k4; ++$i5) {
                                 $pos2->setComponents($l4, $k3, $i5);
 
-                                if ($worldIn->getBlockIdAt($pos2->x, $pos2->y, $pos2->z) === Block::LEAVES) {
+                                if ($worldIn->getBlockAt($pos2->x, $pos2->y, $pos2->z) === BlockTypeIds::JUNGLE_LEAVES) {
                                     $blockpos2 = $pos2->west();
                                     $blockpos3 = $pos2->east();
                                     $blockpos4 = $pos2->north();
                                     $blockpos1 = $pos2->south();
 
-                                    if ($rand->nextBoundedInt(4) === 0 && $worldIn->getBlockIdAt($blockpos2->x, $blockpos2->y, $blockpos2->z) === Block::AIR) {
+                                    if ($rand->nextBoundedInt(4) === 0 && $worldIn->getBlockAt($blockpos2->x, $blockpos2->y, $blockpos2->z) === BlockTypeIds::AIR) {
                                         $this->addHangingVine($worldIn, $blockpos2, 8);
                                     }
 
-                                    if ($rand->nextBoundedInt(4) === 0 && $worldIn->getBlockIdAt($blockpos3->x, $blockpos3->y, $blockpos3->z) === Block::AIR) {
+                                    if ($rand->nextBoundedInt(4) === 0 && $worldIn->getBlockAt($blockpos3->x, $blockpos3->y, $blockpos3->z) === BlockTypeIds::AIR) {
                                         $this->addHangingVine($worldIn, $blockpos3, 2);
                                     }
 
-                                    if ($rand->nextBoundedInt(4) === 0 && $worldIn->getBlockIdAt($blockpos4->x, $blockpos4->y, $blockpos4->z) === Block::AIR) {
+                                    if ($rand->nextBoundedInt(4) === 0 && $worldIn->getBlockAt($blockpos4->x, $blockpos4->y, $blockpos4->z) === BlockTypeIds::AIR) {
                                         $this->addHangingVine($worldIn, $blockpos4, 1);
                                     }
 
-                                    if ($rand->nextBoundedInt(4) === 0 && $worldIn->getBlockIdAt($blockpos1->x, $blockpos1->y, $blockpos1->z) === Block::AIR) {
+                                    if ($rand->nextBoundedInt(4) === 0 && $worldIn->getBlockAt($blockpos1->x, $blockpos1->y, $blockpos1->z) === BlockTypeIds::AIR) {
                                         $this->addHangingVine($worldIn, $blockpos1, 4);
                                     }
                                 }
@@ -188,28 +188,28 @@ class NewJungleTree extends CustomTree
         }
     }
 
-    public function setBlockAndNotifyAdequately(ChunkManager $level, Vector3 $pos, Block $block): void
+    public function setBlockAndNotifyAdequately(ChunkManager $world, Vector3 $pos, Block $block): void
     {
-        $level->setBlockIdAt($pos->x, $pos->y, $pos->z, $block->getId());
-        $level->setBlockDataAt($pos->x, $pos->y, $pos->z, $block->getDamage());
+        $world->setBlockAt($pos->x, $pos->y, $pos->z, $block->getTypeId());
+       // $level->setBlockDataAt($pos->x, $pos->y, $pos->z, $block->getDamage());
     }
 
-    private function isAirBlock(ChunkManager $level, Vector3 $v): bool
+    private function isAirBlock(ChunkManager $world, Vector3 $v): bool
     {
-        return $level->getBlockIdAt($v->x, $v->y, $v->z) === Block::AIR;
+        return $world->getBlockAt($v->x, $v->y, $v->z) === BlockTypeIds::AIR;
     }
 
-    private function addVine(ChunkManager $worldIn, Vector3 $pos, int $meta): void
+    private function addVine(ChunkManager $worldIn, Vector3 $pos): void
     {
-        $this->setBlockAndNotifyAdequately($worldIn, $pos, Block::get(Block::VINE, $meta));
+        $this->setBlockAndNotifyAdequately($worldIn, $pos, VanillaBlocks::VINE());
     }
 
-    private function addHangingVine(ChunkManager $worldIn, Vector3 $pos, int $meta): void
+    private function addHangingVine(ChunkManager $worldIn, Vector3 $pos): void
     {
         $this->addVine($worldIn, $pos, $meta);
         $i = 4;
 
-        for ($pos = $pos->down(); $i > 0 && $worldIn->getBlockIdAt($pos->x, $pos->y, $pos->z) === Block::AIR; --$i) {
+        for ($pos = $pos->down(); $i > 0 && $worldIn->getBlockAt($pos->x, $pos->y, $pos->z) === BlockTypeIds::AIR; --$i) {
             $this->addVine($worldIn, $pos, $meta);
             $pos = $pos->down();
         }
@@ -219,7 +219,7 @@ class NewJungleTree extends CustomTree
     {
         $meta = $this->getCocoaMeta($age, $side);
 
-        $this->setBlockAndNotifyAdequately($worldIn, $pos, new UnknownBlock(127, $meta));
+        $this->setBlockAndNotifyAdequately($worldIn, $pos, BlockTypeIds::COCOA_POD);
     }
 
     private function getCocoaMeta(int $age, int $side): int
