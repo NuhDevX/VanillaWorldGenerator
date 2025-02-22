@@ -3,8 +3,8 @@ namespace BlockHorizons\BlockGenerator\populator;
 
 use BlockHorizons\BlockGenerator\populator\helper\EnsureCover;
 use BlockHorizons\BlockGenerator\populator\helper\EnsureGrassBelow;
-use pocketmine\block\Block;
-use pocketmine\level\format\Chunk;
+use pocketmine\block\BlockTypeIds;
+use pocketmine\world\format\Chunk;
 use pocketmine\utils\Random;
 
 class SmallMushroomPopulator extends SurfaceBlockPopulator {
@@ -14,7 +14,7 @@ class SmallMushroomPopulator extends SurfaceBlockPopulator {
     }
 
     protected function getBlockId(int $x, int $z, Random $random, Chunk $chunk) : int {
-        return Block::BROWN_MUSHROOM;
+        return BlockTypeIds::BROWN_MUSHROOM;
     }
 
 }
