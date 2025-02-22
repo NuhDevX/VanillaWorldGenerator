@@ -3,7 +3,7 @@
 namespace BlockHorizons\BlockGenerator\populator\helper;
 
 use pocketmine\block\Block;
-use pocketmine\level\format\Chunk;
+use pocketmine\world\format\Chunk;
 
 class EnsureCover
 {
@@ -14,8 +14,8 @@ class EnsureCover
 
     public static function ensureCover(int $x, int $y, int $z, Chunk $chunk): bool
     {
-        $id = $chunk->getBlockId($x, $y, $z);
-        return Block::get($id)->canBeReplaced();
+        $id = $chunk->getBlockStateId($x, $y, $z);
+        return $id->canBeReplaced();
     }
 
 }
