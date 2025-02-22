@@ -2,15 +2,15 @@
 namespace BlockHorizons\BlockGenerator\populator;
 
 use BlockHorizons\BlockGenerator\object\BigSpruceTree;
-use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\generator\populator\Populator;
+use pocketmine\block\BlockTypeIds;
+use pocketmine\world\ChunkManager;
+use pocketmine\world\generator\populator\Populator;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
 
 class SpruceBigTreePopulator extends Populator {
 
-    private $level;
+    private $world;
     private $randomAmount;
     private $baseAmount;
 
@@ -22,8 +22,8 @@ class SpruceBigTreePopulator extends Populator {
         $this->baseAmount = $baseAmount;
     }
 
-    public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random) : void {
-        $this->level = $level;
+    public function populate(ChunkManager $world, int $chunkX, int $chunkZ, Random $random) : void {
+        $this->world = $world;
         $amount = $random->nextBoundedInt($this->randomAmount + 1) + $this->baseAmount;
         $v = new Vector3();
 
@@ -34,17 +34,17 @@ class SpruceBigTreePopulator extends Populator {
             if ($y == -1) {
                 continue;
             }
-            (new BigSpruceTree(3 / 4, 4))->placeObject($this->level, (int) ($v->x = $x), (int) ($v->y = $y), (int) ($v->z = $z), $random);
+            (new BigSpruceTree(3 / 4, 4))->placeObject($this->world, (int) ($v->x = $x), (int) ($v->y = $y), (int) ($v->z = $z), $random);
         }
     }
 
     private function getHighestWorkableBlock(int $x, int $z) : int {
         $y = 0;
         for ($y = 255; $y > 0; --$y) {
-            $b = $this->level->getBlockIdAt($x, $y, $z);
-            if ($b === Block::DIRT || $b === Block::GRASS) {
+            $b = $this->world->getBlockAt($x, $y, $z);
+            if ($b === BlockTypeIds::DIRT || $b === BlockTypeIds::GRASS) {
                 break;
-            } elseif ($b != Block::AIR && $b != Block::SNOW_LAYER) {
+            } elseif ($b != BlockTypeIds::AIR && $b != BlockTypeIds::SNOW_LAYER) {
                 return -1;
             }
         }
