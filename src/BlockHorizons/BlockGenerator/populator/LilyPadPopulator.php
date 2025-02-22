@@ -5,7 +5,7 @@ namespace BlockHorizons\BlockGenerator\populator;
 use BlockHorizons\BlockGenerator\populator\helper\EnsureBelow;
 use BlockHorizons\BlockGenerator\populator\helper\EnsureCover;
 use pocketmine\block\BlockTypeIds;
-use pocketmine\level\format\Chunk;
+use pocketmine\world\format\Chunk;
 use pocketmine\utils\Random;
 
 class LilyPadPopulator extends SurfaceBlockPopulator
