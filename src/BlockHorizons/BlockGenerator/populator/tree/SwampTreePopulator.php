@@ -4,8 +4,8 @@ namespace BlockHorizons\BlockGenerator\populator\tree;
 
 use BlockHorizons\BlockGenerator\object\SwampTree;
 use BlockHorizons\BlockGenerator\populator\PopulatorCount;
-use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
+use pocketmine\block\BlockTypeIds;
+use pocketmine\world\ChunkManager;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
 
@@ -16,14 +16,14 @@ class SwampTreePopulator extends PopulatorCount
 
     private $type;
 
-    public function __construct(int $type = \pocketmine\block\Wood::OAK)
+    public function __construct(int $type = \pocketmine\block\utils\WoodType::OAK)
     {
         $this->type = $type;
     }
 
-    public function populateCount(ChunkManager $level, int $chunkX, int $chunkZ, Random $random): void
+    public function populateCount(ChunkManager $world, int $chunkX, int $chunkZ, Random $random): void
     {
-        $this->level = $level;
+        $this->world = $world;
 
         $x = $random->nextRange($chunkX << 4, ($chunkX << 4) + 15);
         $z = $random->nextRange($chunkZ << 4, ($chunkZ << 4) + 15);
@@ -31,17 +31,17 @@ class SwampTreePopulator extends PopulatorCount
         if ($y === -1) {
             return;
         }
-        (new SwampTree($this->type))->generate($level, $random, new Vector3($x, $y, $z));
+        (new SwampTree($this->type))->generate($world, $random, new Vector3($x, $y, $z));
     }
 
     private function getHighestWorkableBlock(int $x, int $z): int
     {
         $y;
         for ($y = 127; $y > 0; --$y) {
-            $b = $this->level->getBlockIdAt($x, $y, $z);
-            if ($b === Block::DIRT || $b === Block::GRASS || $b === Block::TALL_GRASS) {
+            $b = $this->world->getBlockAt($x, $y, $z);
+            if ($b === BlockTypeIds::DIRT || $b === BlockTypeIds::GRASS || $b === BlockTypeIds::TALL_GRASS) {
                 break;
-            } elseif ($b !== Block::AIR && $b !== Block::SNOW_LAYER) {
+            } elseif ($b !== BlockTypeIds::AIR && $b !== BlockTypeIds::SNOW_LAYER) {
                 return -1;
             }
         }
