@@ -2,7 +2,7 @@
 
 namespace BlockHorizons\BlockGenerator\populator\helper;
 
-use pocketmine\level\format\Chunk;
+use pocketmine\world\format\Chunk;
 
 class EnsureBelow
 {
@@ -13,7 +13,7 @@ class EnsureBelow
 
     public static function ensureBelow(int $x, int $y, int $z, int $id, Chunk $chunk): bool
     {
-        return $chunk->getBlockId($x, $y - 1, $z) === $id;
+        return $chunk->getBlockStateId($x, $y - 1, $z) === $id;
     }
 
 }
