@@ -3,8 +3,8 @@
 namespace BlockHorizons\BlockGenerator\populator;
 
 use BlockHorizons\BlockGenerator\helper\PopulatorHelpers;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\generator\populator\Populator;
+use pocketmine\world\ChunkManager;
+use pocketmine\world\generator\populator\Populator;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
 
@@ -30,7 +30,7 @@ abstract class PopulatorCount extends Populator
         $this->spreadChance = $chance;
     }
 
-    public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random): void
+    public function populate(ChunkManager $world, int $chunkX, int $chunkZ, Random $random): void
     {
         $count = $this->baseAmount + $random->nextBoundedInt($this->randomAmount);
         for ($i = 0; $i < $count; $i++) {
@@ -38,9 +38,9 @@ abstract class PopulatorCount extends Populator
         }
     }
 
-    protected abstract function populateCount(ChunkManager $level, int $chunkX, int $chunkZ, Random $random): void;
+    protected abstract function populateCount(ChunkManager $world, int $chunkX, int $chunkZ, Random $random): void;
 
-    protected function spread(int $x, int $y, int $z, ChunkManager $level): ?Vector3
+    protected function spread(int $x, int $y, int $z, ChunkManager $world): ?Vector3
     {
         return null;
     }
