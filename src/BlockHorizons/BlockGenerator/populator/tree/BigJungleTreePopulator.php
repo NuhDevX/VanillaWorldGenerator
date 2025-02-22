@@ -4,28 +4,29 @@ namespace BLockHorizons\BlockGenerator\populator\tree;
 
 use BlockHorizons\BlockGenerator\object\BigJungleTree;
 use BlockHorizons\BlockGenerator\populator\PopulatorCount;
-use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
+use pocketmine\block\BlockTypeIds;
+use pocketmine\block\VanillaBlocks;
+use pocketmine\world\ChunkManager;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
 
 class BigJungleTreePopulator extends PopulatorCount
 {
 
-    private $level;
+    private $world;
 
     /** @var int */
     private $type;
 
-    public function __construct(int $type = \pocketmine\block\Wood::JUNGLE)
+    public function __construct(int $type = \pocketmine\block\utils\WoodType::JUNGLE)
     {
         $this->type = $type;
     }
 
-    public function populateCount(ChunkManager $level, int $chunkX, int $chunkZ, Random $random): void
+    public function populateCount(ChunkManager $world, int $chunkX, int $chunkZ, Random $random): void
     {
-        $this->level = $level;
-        $chunk = $level->getChunk($chunkX, $chunkZ);
+        $this->world = $world;
+        $chunk = $world->getChunk($chunkX, $chunkZ);
         // This should be removed? As same things is done in PopulatorCount upon calling this method
         $amount = $random->nextBoundedInt($this->randomAmount + 1) + $this->baseAmount;
         $v = new Vector3();
@@ -37,7 +38,7 @@ class BigJungleTreePopulator extends PopulatorCount
             if ($y === -1) {
                 continue;
             }
-            (new BigJungleTree(10, 20, Block::get(Block::LOG, \pocketmine\block\Wood::JUNGLE), Block::get(Block::LEAVES, \pocketmine\block\Wood::JUNGLE)))->generate($level, $random, $v->setComponents($x, $y, $z));
+            (new BigJungleTree(10, 20, VanillaBlocks::JUNGLE_LOG(), VanillaBlocks::JUNGLE_LEAVES()))->generate($world, $random, $v->setComponents($x, $y, $z));
         }
     }
 
@@ -45,10 +46,10 @@ class BigJungleTreePopulator extends PopulatorCount
     {
         $y = 0;
         for ($y = 255; $y > 0; --$y) {
-            $b = $this->level->getBlockIdAt($x, $y, $z);
-            if ($b === Block::DIRT || $b === Block::GRASS || $b === Block::TALL_GRASS) {
+            $b = $this->world->getBlockAt($x, $y, $z);
+            if ($b === BlockTypeIds::DIRT || $b === BlockTypeIds::GRASS || $b === BlockTypeIds::TALL_GRASS) {
                 break;
-            } elseif ($b !== Block::AIR && $b !== Block::SNOW_LAYER) {
+            } elseif ($b !== BlockTypeIds::AIR && $b !== BlockTypeIds::SNOW_LAYER) {
                 return -1;
             }
         }
