@@ -5,10 +5,11 @@ namespace BlockHorizons\BlockGenerator\populator;
 use BlockHorizons\BlockGenerator\biomes\CustomBiome;
 use BlockHorizons\BlockGenerator\biomes\type\CoveredBiome;
 use BlockHorizons\BlockGenerator\math\CustomRandom;
-use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\format\Chunk;
-use pocketmine\level\generator\populator\Populator;
+use pocketmine\block\BlockTypeIds;
+use pocketmine\world\ChunkManager;
+use pocketmine\world\format\Chunk;
+use pocketmine\world\World;
+use pocketmine\world\generator\populator\Populator;
 use pocketmine\utils\Random;
 
 class CavePopulator extends Populator
@@ -29,9 +30,9 @@ public static $individualCaveRarity = 25;
     protected $worldLong1, $worldLong2;
     private $random;
 
-    public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random): void
+    public function populate(ChunkManager $world, int $chunkX, int $chunkZ, Random $random): void
     {
-        $this->random = new CustomRandom($level->getSeed());
+        $this->random = new CustomRandom(World::getSeed());
 
         $this->worldLong1 = $this->random->nextLong();
         $this->worldLong2 = $this->random->nextLong();
@@ -43,7 +44,7 @@ public static $individualCaveRarity = 25;
             for ($z = $chunkZ - $size; $z <= $chunkZ + $size; $z++) {
                 $randomX = $x * $this->worldLong1;
                 $randomZ = $z * $this->worldLong2;
-                $this->random->setSeed($randomX ^ $randomZ ^ $level->getSeed());
+                $this->random->setSeed($randomX ^ $randomZ ^ World::getSeed());
                 $this->generateChunk($x, $z, $chunk);
             }
         }
@@ -204,8 +205,8 @@ public static $individualCaveRarity = 25;
                 for ($zz = $zFrom; (!$waterFound) && ($zz < $zTo); $zz++) {
                     for ($yy = $yTo + 1; (!$waterFound) && ($yy >= $yFrom - 1); $yy--) {
                         if ($yy >= 0 && $yy < $this->worldHeightCap) {
-                            $block = $chunk->getBlockId($xx, $yy, $zz);
-                            if ($block == Block::WATER || $block == Block::STILL_WATER) {
+                            $block = $chunk->getBlockStateId($xx, $yy, $zz);
+                            if ($block == BlockTypeIds::WATER) {
                                 $waterFound = true;
                             }
                             if (($yy != $yFrom - 1) && ($xx != $xFrom) && ($xx != $xTo - 1) && ($zz != $zFrom) && ($zz != $zTo - 1))
@@ -235,20 +236,20 @@ public static $individualCaveRarity = 25;
                                      continue;
                                  }
 
-                                $material = $chunk->getBlockId($xx, $yy, $zz);
-                                $materialAbove = $chunk->getBlockId($xx, $yy + 1, $zz);
-                                if ($material == Block::GRASS || $material == Block::MYCELIUM) {
+                                $material = $chunk->getBlockStateId($xx, $yy, $zz);
+                                $materialAbove = $chunk->getBlockStateId($xx, $yy + 1, $zz);
+                                if ($material == BlockTypeIds::GRASS || $material == BlockTypeIds::MYCELIUM) {
                                     $grassFound = true;
                                 }
                                 if ($yy - 1 < 10) {
-                                    $chunk->setBlock($xx, $yy, $zz, Block::LAVA);
+                                    $chunk->setBlockStateId($xx, $yy, $zz, BlockTypeIds::LAVA);
                                 } else {
-                                    $chunk->setBlock($xx, $yy, $zz, Block::AIR);
+                                    $chunk->setBlockStateId($xx, $yy, $zz, BlockTypeIds::AIR);
 
                                     // If grass was just deleted, try to
                                     // move it down
-                                    if ($grassFound && ($chunk->getBlockId($xx, $yy - 1, $zz) == Block::DIRT)) {
-                                        $chunk->setBlock($xx, $yy - 1, $zz, $biome->getSurfaceBlock($yy - 1));
+                                    if ($grassFound && ($chunk->getBlockId($xx, $yy - 1, $zz) == BlockTypeIds::DIRT)) {
+                                        $chunk->setBlockStateId($xx, $yy - 1, $zz, $biome->getSurfaceBlock($yy - 1));
                                     }
                                 }
                             }
