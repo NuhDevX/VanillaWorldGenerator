@@ -22,13 +22,13 @@ class KelpPopulator extends SurfaceBlockPopulator
         }
     }
 
-    protected function getHighestWorkableBlock(ChunkManager $level, int $x, int $z, Chunk $chunk)
+    protected function getHighestWorkableBlock(ChunkManager $world, int $x, int $z, Chunk $chunk)
     {
         $y = 0;
         //start at 254 because we add one afterwards
         for ($y = 254; $y >= 0; --$y) {
-            $id = $chunk->getBlockId($x, $y, $z);
-            if (!PopulatorHelpers::isNonSolid($id) && !$id === Block::STILL_WATER) {
+            $id = $chunk->getBlockStateId($x, $y, $z);
+            if (!PopulatorHelpers::isNonSolid($id) && !$id === BlockTypeIds::WATER) {
                 break;
             }
         }
