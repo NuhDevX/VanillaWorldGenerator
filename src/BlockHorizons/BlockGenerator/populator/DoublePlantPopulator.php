@@ -5,9 +5,9 @@ use BlockHorizons\BlockGenerator\populator\SurfaceBlockPopulator;
 use BlockHorizons\BlockGenerator\populator\helper\EnsureCover;
 use BlockHorizons\BlockGenerator\populator\helper\EnsureGrassBelow;
 use BlockHorizons\BlockGenerator\populator\helper\PopulatorHelpers;
-use pocketmine\block\Block;
+use pocketmine\block\BlockTypeIds;
 use pocketmine\block\BlockFactory;
-use pocketmine\level\format\Chunk;
+use pocketmine\world\format\Chunk;
 use pocketmine\utils\Random;
 
 class DoublePlantPopulator extends SurfaceBlockPopulator {
@@ -23,12 +23,12 @@ class DoublePlantPopulator extends SurfaceBlockPopulator {
     }
 
     protected function getBlockId(int $x, int $z, Random $random, Chunk $chunk) : int {
-        return Block::DOUBLE_PLANT;
+        return BlockTypeIds::DOUBLE_PLANT; //hah emang ada Double Plant di Minecraft?
     }
 
     protected function placeBlock(int $x, int $y, int $z, int $id, Chunk $chunk, Random $random) : void {
-        $chunk->setBlock($x, $y, $z, $id, $this->type);
-        $chunk->setBlock($x, $y + 1, $z, $id, $this->type);
+        $chunk->setBlockStateId($x, $y, $z, $id, $this->type);
+        $chunk->setBlockStateId($x, $y + 1, $z, $id, $this->type);
     }
 
 }
