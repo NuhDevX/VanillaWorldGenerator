@@ -168,8 +168,7 @@ class RavinesPopulator extends Populator {
                             continue;
                         if ($localY < $this->worldHeightCap) {
                             $materialAtPosition = $generatingChunkBuffer->getBlockStateId($localX, $localY, $localZ);
-                            if ($materialAtPosition === Block::WATER
-                                    || $materialAtPosition === BlockTypeIds::WATER) {
+                            if ($materialAtPosition === BlockTypeIds::WATER) {
                                 $i4 = 1;
                             }
                             if (($localY != $maxY - 1) && ($localX != $k) && ($localX != $m - 1) && ($localZ != $i2) && ($localZ != $i3 - 1))
